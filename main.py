@@ -217,3 +217,8 @@ print(f"ResNet50 Test Accuracy: {test_acc_resnet50}")
 # Evaluate Baseline CNN
 test_loss_baseline, test_acc_baseline = baseline.evaluate(validation_generator)
 print(f"Baseline CNN Test Accuracy: {test_acc_baseline}")
+
+model.save('proprietary_cnn.h5')
+vgg16.save('vgg16_model.h5')
+resnet50.save('resnet50_model.h5')
+baseline.save('baseline_cnn.h5')
