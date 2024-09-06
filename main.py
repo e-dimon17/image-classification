@@ -150,3 +150,19 @@ def resnet50_model(input_shape=(224, 224, 3), num_classes=10):
 resnet50 = resnet50_model(num_classes=train_csv['label'].nunique())
 resnet50.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 resnet50.summary()
+
+def baseline_cnn(input_shape=(224, 224, 3), num_classes=10):
+    model = models.Sequential()
+    model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape, padding='same'))
+    model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Conv2D(64, (3, 3), activation='relu', padding='same'))
+    model.add(layers.MaxPooling2D((2, 2)))
+    model.add(layers.Flatten())
+    model.add(layers.Dense(64, activation='relu'))
+    model.add(layers.Dense(num_classes, activation='softmax'))
+
+    return model
+
+baseline = baseline_cnn(num_classes=train_csv['label'].nunique())
+baseline.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+baseline.summary()
