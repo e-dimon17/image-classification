@@ -1,0 +1,12 @@
+tensorflow
+keras
+numpy
+pandas
+matplotlib
+scikit-learn
+pyngrok
+nest_asyncio
+uvicorn
+fastapi
+kaggle
+python-multipart
