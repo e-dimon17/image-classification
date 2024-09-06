@@ -100,3 +100,29 @@ model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accur
 
 # Summary
 model.summary()
+
+
+from tensorflow.keras.applications import VGG16
+from tensorflow.keras import layers, models, Input
+
+def vgg16_model(input_shape=(224, 224, 3), num_classes=10):
+    # Define the input
+    inputs = Input(input_shape)
+
+    # Define VGG16 base model
+    base_model = VGG16(weights='imagenet', include_top=False, input_tensor=inputs)
+
+    x = base_model.output
+    x = layers.GlobalAveragePooling2D()(x)
+    x = layers.Dense(256, activation='relu')(x)
+    outputs = layers.Dense(num_classes, activation='softmax')(x)
+
+    base_model.trainable = False  # Freeze the base model
+
+    model = models.Model(inputs = inputs, outputs = outputs)
+
+    return model
+
+vgg16 = vgg16_model(num_classes=train_csv['label'].nunique())
+vgg16.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+vgg16.summary()
