@@ -39,3 +39,15 @@ async def predict(model_type: str = Form(...), image: UploadFile = File(...)):
     predicted_class = np.argmax(predictions, axis=1)
 
     return {"predicted_class": int(predicted_class[0])}
+
+
+import uvicorn
+import nest_asyncio
+from pyngrok import ngrok
+
+nest_asyncio.apply()
+
+public_url = ngrok.connect(9004, 'http')
+print('Public URL:', public_url)
+
+uvicorn.run(app, host='0.0.0.0', port=9004)
