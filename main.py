@@ -67,3 +67,36 @@ validation_generator  = train_datagen.flow_from_dataframe(
     class_mode='categorical',  # Use 'binary' or 'categorical' based on your problem
     subset='validation'  # Set as training data
 )
+
+
+from tensorflow.keras import layers, models
+
+def proprietary_cnn(input_shape=(224, 224, 3), num_classes=10):
+    model = models.Sequential()
+
+    # Layer 1
+    model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=input_shape, padding='same'))
+    model.add(layers.MaxPooling2D((2, 2)))
+
+    # Layer 2
+    model.add(layers.Conv2D(64, (3, 3), activation='relu', padding='same'))
+    model.add(layers.MaxPooling2D((2, 2)))
+
+    # Layer 3
+    model.add(layers.Conv2D(128, (3, 3), activation='relu', padding='same'))
+    model.add(layers.MaxPooling2D((2, 2)))
+
+    # Flatten and Dense layers
+    model.add(layers.Flatten())
+    model.add(layers.Dense(512, activation='relu'))
+    model.add(layers.Dropout(0.5))
+    model.add(layers.Dense(num_classes, activation='softmax'))
+
+    return model
+
+# Compile the model
+model = proprietary_cnn(num_classes=train_csv['label'].nunique())
+model.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+
+# Summary
+model.summary()
