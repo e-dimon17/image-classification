@@ -166,3 +166,37 @@ def baseline_cnn(input_shape=(224, 224, 3), num_classes=10):
 baseline = baseline_cnn(num_classes=train_csv['label'].nunique())
 baseline.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 baseline.summary()
+
+epochs = 10  # Adjust as needed
+
+# Proprietary CNN
+history_prop = model.fit(
+    train_generator,
+    steps_per_epoch=train_generator.samples // train_generator.batch_size,
+    validation_data=validation_generator,
+    validation_steps=validation_generator.samples // validation_generator.batch_size,
+    epochs=epochs)
+
+# VGG16
+history_vgg16 = vgg16.fit(
+    train_generator,
+    steps_per_epoch=train_generator.samples // train_generator.batch_size,
+    validation_data=validation_generator,
+    validation_steps=validation_generator.samples // validation_generator.batch_size,
+    epochs=epochs)
+
+# ResNet50
+history_resnet50 = resnet50.fit(
+    train_generator,
+    steps_per_epoch=train_generator.samples // train_generator.batch_size,
+    validation_data=validation_generator,
+    validation_steps=validation_generator.samples // validation_generator.batch_size,
+    epochs=epochs)
+
+# Baseline CNN
+history_baseline = baseline.fit(
+    train_generator,
+    steps_per_epoch=train_generator.samples // train_generator.batch_size,
+    validation_data=validation_generator,
+    validation_steps=validation_generator.samples // validation_generator.batch_size,
+    epochs=epochs)
