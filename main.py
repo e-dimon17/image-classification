@@ -126,3 +126,27 @@ def vgg16_model(input_shape=(224, 224, 3), num_classes=10):
 vgg16 = vgg16_model(num_classes=train_csv['label'].nunique())
 vgg16.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
 vgg16.summary()
+
+from tensorflow.keras.applications import ResNet50
+
+def resnet50_model(input_shape=(224, 224, 3), num_classes=10):
+    # Define input
+    inputs = Input(input_shape)
+
+    # Defien ResNet50 base model
+    base_model = ResNet50(weights='imagenet', include_top=False, input_tensor=inputs)
+
+    x = base_model.output
+    x = layers.GlobalAveragePooling2D()(x)
+    x = layers.Dense(256, activation='relu')(x)
+    outputs = layers.Dense(num_classes, activation='softmax')(x)
+
+    base_model.trainable = False  # Freeze the base model
+
+    model = models.Model(inputs = inputs, outputs = outputs)
+
+    return model
+
+resnet50 = resnet50_model(num_classes=train_csv['label'].nunique())
+resnet50.compile(optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
+resnet50.summary()
