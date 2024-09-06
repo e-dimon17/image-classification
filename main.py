@@ -200,3 +200,20 @@ history_baseline = baseline.fit(
     validation_data=validation_generator,
     validation_steps=validation_generator.samples // validation_generator.batch_size,
     epochs=epochs)
+
+
+# Evaluate Proprietary CNN
+test_loss_prop, test_acc_prop = model.evaluate(validation_generator)
+print(f"Proprietary CNN Test Accuracy: {test_acc_prop}")
+
+# Evaluate VGG16
+test_loss_vgg16, test_acc_vgg16 = vgg16.evaluate(validation_generator)
+print(f"VGG16 Test Accuracy: {test_acc_vgg16}")
+
+# Evaluate ResNet50
+test_loss_resnet50, test_acc_resnet50 = resnet50.evaluate(validation_generator)
+print(f"ResNet50 Test Accuracy: {test_acc_resnet50}")
+
+# Evaluate Baseline CNN
+test_loss_baseline, test_acc_baseline = baseline.evaluate(validation_generator)
+print(f"Baseline CNN Test Accuracy: {test_acc_baseline}")
